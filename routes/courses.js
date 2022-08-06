@@ -106,7 +106,7 @@ router.post(
     try {
       const course = await Course.create(req.body);
       res.setHeader("Location", "/courses/" + course.id);
-      res.status(201).json({ message: "Course successfully created" });
+      res.status(201).json().end();
     } catch (error) {
       if (
         error.name === "SequelizeValidationError" ||
