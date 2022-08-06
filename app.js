@@ -3,7 +3,7 @@
 // load modules
 const express = require("express");
 const morgan = require("morgan");
-const { sequelize } = require("./models/index.js");
+const { sequelize } = require("./models/index");
 
 const users = require("./routes/users");
 const courses = require("./routes/courses");
@@ -19,6 +19,17 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+
+// Test the database connection
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection to the database successful!");
+    await sequelize.sync();
+  } catch (error) {
+    console.error("Error connecting to the database: ", error);
+  }
+})();
 
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
@@ -50,16 +61,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Test the database connection
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection to the database successful!");
-    await sequelize.sync();
-  } catch (error) {
-    console.error("Error connecting to the database: ", error);
-  }
-})();
+
 
 // set our port
 app.set("port", process.env.PORT || 5000);

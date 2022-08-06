@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-const User = require("./models").User;
+const User = require("../models").User;
 const Course = require("../models").Course;
 const bcrypt = require("bcrypt");
 const auth = require("basic-auth");
@@ -31,9 +31,9 @@ const authenticateUser = async (req, res, next) => {
     if (user[0]) {
       const authenticated = await bcrypt.compare(
         credentials.pass,
-        user[0].passowrd
+        user[0].password
       );
-      console.log(authenticated);
+      
       // If the passwords match
       if (authenticated) {
         console.log(
@@ -63,7 +63,7 @@ const authenticateUser = async (req, res, next) => {
 // Get All Courses
 
 router.get(
-  "/courses",
+  "/",
   asyncHandler(async (req, res) => {
     const courses = await Course.findAll({
       include: [
@@ -80,7 +80,7 @@ router.get(
 // Get A Course
 
 router.get(
-  "/courses/:id",
+  "/:id",
   asyncHandler(async (req, res) => {
     let course = await Course.findAll({
       where: {
@@ -100,7 +100,7 @@ router.get(
 // Create A New Course
 
 router.post(
-  "/courses",
+  "/",
   authenticateUser,
   asyncHandler(async (req, res) => {
     try {
@@ -124,7 +124,7 @@ router.post(
 // Update A Course
 
 router.put(
-  "/courses/:id",
+  "/:id",
   authenticateUser,
   asyncHandler(async (req, res) => {
     try {
@@ -150,7 +150,7 @@ router.put(
 // Delete A Course
 
 router.delete(
-  "/courses/:id",
+  "/:id",
   authenticateUser,
   asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id);
@@ -162,3 +162,5 @@ router.delete(
     }
   })
 );
+
+module.exports = router;

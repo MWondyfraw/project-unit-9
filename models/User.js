@@ -6,7 +6,7 @@
 const { Model } = require("sequelize");
 const bcrypt = require("bcrypt");
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here

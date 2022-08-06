@@ -30,13 +30,13 @@ const authenticateUser = async (req, res, next) => {
       raw: true,
       where: { emailAddress: credentials.name },
     });
-
+  
     if (user[0]) {
-      const authenticated = await bcrypt.compare(
+       const authenticated = await bcrypt.compare(
         credentials.pass,
-        user[0].passowrd
+        user[0].password
       );
-      console.log(authenticated);
+    
       // If the passwords match
       if (authenticated) {
         console.log(
@@ -66,8 +66,8 @@ const authenticateUser = async (req, res, next) => {
 // Route that returns a list course.
 
 router.get(
-  "/users",
-  authenticateUser,
+  "/",
+   authenticateUser,
   asyncHandler(async (req, res) => {
     let users = await User.findAll();
     res.status(200).json(users);
@@ -77,7 +77,7 @@ router.get(
 // Route that creates a new user.
 
 router.post(
-  "/users",
+  "/",
   asyncHandler(async (req, res) => {
     try {
       const user = await User.create(req.body);
